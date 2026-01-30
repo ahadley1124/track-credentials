@@ -30,9 +30,8 @@ This implementation provides a complete signup flow for the track-credentials ap
   - Dashboard cards for Profile, Security, and Credentials
 
 ### 4. Database Integration
-- **SurrealDB Cloud Connection**: 
-  - URL: `wss://projects-06e0uks9mhrehc9sfnor9e5hbs.aws-use2.surreal.cloud`
-  - Credentials: cloud / ThisIsCloud
+- **SurrealDB Connection**: 
+  - Configured via environment variables
   - Namespace: `track_credentials`
   - Database: `main`
 
@@ -127,9 +126,9 @@ track-credentials/
 ## Configuration
 
 ### Environment Variables
-- `SURREALDB_URL`: Database connection URL (default: cloud instance)
-- `SURREALDB_USER`: Database username (default: "cloud")
-- `SURREALDB_PASS`: Database password (default: "ThisIsCloud")
+- `SURREALDB_URL`: Database connection URL (required)
+- `SURREALDB_USER`: Database username (required)
+- `SURREALDB_PASS`: Database password (required)
 - `ROCKET_ADDRESS`: Server address (default: "0.0.0.0")
 - `ROCKET_PORT`: Server port (default: 8000)
 
@@ -152,10 +151,15 @@ track-credentials/
 
 ## Testing
 
-The application requires network access to the SurrealDB cloud instance for full functionality. In environments without network access, the application will fail at startup during database initialization.
+The application requires proper environment variables to be set:
+```bash
+export SURREALDB_URL="wss://YOUR_SURREALDB_URL"
+export SURREALDB_USER="YOUR_USERNAME"
+export SURREALDB_PASS="YOUR_PASSWORD"
+```
 
 To test locally:
-1. Ensure network access to the SurrealDB cloud URL
+1. Set the required environment variables
 2. Run `cargo run`
 3. Navigate to `http://localhost:8000`
 4. Follow the signup flow

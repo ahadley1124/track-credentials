@@ -4,14 +4,17 @@ use surrealdb::Surreal;
 use std::env;
 
 pub async fn init_db() -> Result<Surreal<Client>, Box<dyn std::error::Error>> {
-    // Get database URL from environment or use default
+    // Get database configuration from environment variables
     let db_url = env::var("SURREALDB_URL")
-        .unwrap_or_else(|_| "wss://projects-06e0uks9mhrehc9sfnor9e5hbs.aws-use2.surreal.cloud".to_string());
+        .expect("SURREALDB_URL environment variable must be set");
     
-    let db_user = env::var("SURREALDB_USER").unwrap_or_else(|_| "cloud".to_string());
-    let db_pass = env::var("SURREALDB_PASS").unwrap_or_else(|_| "ThisIsCloud".to_string());
+    let db_user = env::var("SURREALDB_USER")
+        .expect("SURREALDB_USER environment variable must be set");
     
-    println!("Connecting to SurrealDB at: {}", db_url);
+    let db_pass = env::var("SURREALDB_PASS")
+        .expect("SURREALDB_PASS environment variable must be set");
+    
+    println!("Connecting to SurrealDB...");
     
     // Connect to SurrealDB cloud instance
     let db = Surreal::new::<Ws>(db_url).await?;

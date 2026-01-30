@@ -11,6 +11,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 webauthn-rs = "0.4"
 base64 = "0.21"
+urlencoding = "2.1"
 
 [dependencies.rocket_dyn_templates]
 version = "0.1.0"

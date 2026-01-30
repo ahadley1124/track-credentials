@@ -6,6 +6,7 @@ use rocket_dyn_templates::{Template, context};
 use serde::{Deserialize, Serialize};
 use surrealdb::engine::remote::ws::Client;
 use surrealdb::Surreal;
+use urlencoding::encode;
 
 mod db;
 
@@ -93,7 +94,8 @@ async fn signup_submit(
             if let Some(_user) = users.first() {
                 // Store user ID in session or pass as query parameter
                 // For simplicity, we'll redirect directly to passkey setup
-                Ok(Redirect::to(format!("/passkey-setup?username={}", form.username)))
+                // URL-encode the username to handle special characters
+                Ok(Redirect::to(format!("/passkey-setup?username={}", encode(&form.username))))
             } else {
                 Err(AppError::DatabaseError("Failed to create user".to_string()).into())
             }
@@ -109,15 +111,20 @@ fn passkey_setup(username: String) -> Template {
     })
 }
 
-#[post("/passkey-setup", data = "<username>")]
-async fn passkey_complete(
+#[derive(FromForm)]
+struct PasskeyForm {
     username: String,
+}
+
+#[post("/passkey-setup", data = "<form>")]
+async fn passkey_complete(
+    form: Form<PasskeyForm>,
     db: &State<Surreal<Client>>,
 ) -> Result<Redirect, Template> {
     // Update user to mark passkey as registered
     let result = db
         .query("UPDATE user SET passkey_registered = true WHERE username = $username")
-        .bind(("username", &username))
+        .bind(("username", &form.username))
         .await;
     
     match result {

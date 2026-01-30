@@ -2,10 +2,10 @@
 
 ## SurrealDB Cloud Setup
 
-The application is configured to connect to a SurrealDB cloud instance at:
-- **URL:** `wss://projects-06e0uks9mhrehc9sfnor9e5hbs.aws-use2.surreal.cloud`
-- **Username:** `cloud`
-- **Password:** `ThisIsCloud`
+The application requires a SurrealDB instance. Configure connection details via environment variables:
+- **URL:** Set via `SURREALDB_URL` (e.g., `wss://your-instance.surreal.cloud`)
+- **Username:** Set via `SURREALDB_USER`
+- **Password:** Set via `SURREALDB_PASS`
 - **Namespace:** `track_credentials`
 - **Database:** `main`
 
@@ -38,12 +38,12 @@ brew install surrealdb/tap/surreal
 
 2. Start a local SurrealDB instance:
 ```bash
-surreal start --log trace --user root --pass root memory
+surreal start --log trace --user root --pass root --bind 0.0.0.0:8001 memory
 ```
 
 3. Set environment variables to use local instance:
 ```bash
-export SURREALDB_URL="ws://localhost:8000"
+export SURREALDB_URL="ws://localhost:8001"
 export SURREALDB_USER="root"
 export SURREALDB_PASS="root"
 ```
@@ -80,9 +80,9 @@ Build and run:
 ```bash
 docker build -t track-credentials .
 docker run -p 8000:8000 \
-  -e SURREALDB_URL="wss://projects-06e0uks9mhrehc9sfnor9e5hbs.aws-use2.surreal.cloud" \
-  -e SURREALDB_USER="cloud" \
-  -e SURREALDB_PASS="ThisIsCloud" \
+  -e SURREALDB_URL="wss://YOUR_SURREALDB_URL" \
+  -e SURREALDB_USER="YOUR_USERNAME" \
+  -e SURREALDB_PASS="YOUR_PASSWORD" \
   track-credentials
 ```
 

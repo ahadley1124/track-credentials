@@ -16,17 +16,24 @@ A secure credential tracking application built with Rocket (Rust web framework) 
 
 ## Setup
 
+⚠️ **Security Warning**: This is a demonstration application. Before deploying to production:
+- Replace simple password hashing with bcrypt or argon2
+- Implement proper session management
+- Add CSRF protection
+- Use HTTPS only
+- Never commit credentials to version control
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/ahadley1124/track-credentials.git
 cd track-credentials
 ```
 
-2. Set environment variables (optional - defaults are configured):
+2. Set environment variables (required):
 ```bash
-export SURREALDB_URL="wss://projects-06e0uks9mhrehc9sfnor9e5hbs.aws-use2.surreal.cloud"
-export SURREALDB_USER="cloud"
-export SURREALDB_PASS="ThisIsCloud"
+export SURREALDB_URL="wss://YOUR_SURREALDB_URL"
+export SURREALDB_USER="YOUR_USERNAME"
+export SURREALDB_PASS="YOUR_PASSWORD"
 ```
 
 3. Build the project:
