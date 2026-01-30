@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passkey Setup - Track Credentials</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Set Up Your Passkey</h1>
+            <p>Welcome, <strong>{{ username }}</strong>!</p>
+            <p>Enhance your account security by setting up a passkey. This allows you to sign in using biometric authentication or a security key.</p>
+            
+            <div class="passkey-info">
+                <h3>What is a passkey?</h3>
+                <ul>
+                    <li>More secure than passwords</li>
+                    <li>Uses biometric authentication (fingerprint, face recognition)</li>
+                    <li>No need to remember complex passwords</li>
+                </ul>
+            </div>
+            
+            <form method="post" action="/passkey-setup">
+                <input type="hidden" name="username" value="{{ username }}">
+                <button type="submit" class="btn-primary">Complete Setup</button>
+                <p class="skip-note">For now, click Complete Setup to continue to your dashboard.</p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Track Credentials</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="home-container">
+            <h1>{{ message }}</h1>
+            <p>You have successfully completed the signup process!</p>
+            
+            <div class="dashboard">
+                <h2>Your Dashboard</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3>Profile</h3>
+                        <p>Manage your account settings</p>
+                    </div>
+                    <div class="card">
+                        <h3>Security</h3>
+                        <p>View your security settings and passkeys</p>
+                    </div>
+                    <div class="card">
+                        <h3>Credentials</h3>
+                        <p>Track your stored credentials</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
