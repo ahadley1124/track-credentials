@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Credentials</title>
+    <link rel="stylesheet" href="/styles.css">
+    
+<script type="module">
+import init, * as bindings from '/frontend-830b1bd4a974585e.js';
+const wasm = await init({ module_or_path: '/frontend-830b1bd4a974585e_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script>
+    <link rel="stylesheet" href="/styles-5de9b850c7e56ce7.css" integrity="sha384-DznqO6x96a01Pwgopz82IKfScQ3cWlVAhS7aoNIBGuPu1xZMo1mNM6UtG9JF7EuO"/>
+<link rel="modulepreload" href="/frontend-830b1bd4a974585e.js" crossorigin="anonymous" integrity="sha384-uz7FT6Dw4RVTwoSVoqRT/dpi1EFourhmSNYZB+Ep+vShFmjV/8TgRH4EwTXB+QW1"><link rel="preload" href="/frontend-830b1bd4a974585e_bg.wasm" crossorigin="anonymous" integrity="sha384-Bdh4lSCaYNrQOpjlBduhh++L+8Wx5RMVMc1Aev1gLJgGdMAB03H6wmtQ12cnNlhE" as="fetch" type="application/wasm"></head>
+<body>
+</body>
+</html>
