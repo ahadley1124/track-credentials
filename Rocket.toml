@@ -1,0 +1,10 @@
+[default]
+address = "127.0.0.1"
+port = 8000
+workers = 4
+keep_alive = 5
+log_level = "normal"
+
+[default.limits]
+forms = "32 kB"
+json = "1 MiB"
