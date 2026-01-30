@@ -20,11 +20,13 @@ impl DbConn {
         let mut guard = self.client.lock().await;
         
         if guard.is_none() {
-            // Get database credentials from environment or use defaults
+            // Get database credentials from environment (required)
             let db_url = env::var("SURREAL_URL")
-                .unwrap_or_else(|_| "projects-06e0uks9mhrehc9sfnor9e5hbs.aws-use2.surreal.cloud".to_string());
-            let db_user = env::var("SURREAL_USER").unwrap_or_else(|_| "root".to_string());
-            let db_pass = env::var("SURREAL_PASS").unwrap_or_else(|_| "root".to_string());
+                .map_err(|_| "SURREAL_URL environment variable is required")?;
+            let db_user = env::var("SURREAL_USER")
+                .map_err(|_| "SURREAL_USER environment variable is required")?;
+            let db_pass = env::var("SURREAL_PASS")
+                .map_err(|_| "SURREAL_PASS environment variable is required")?;
             
             let connection_url = format!("wss://{}", db_url);
             
