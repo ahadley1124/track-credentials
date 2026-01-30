@@ -9,6 +9,24 @@ use surrealdb::Surreal;
 
 mod db;
 
+#[derive(Debug)]
+enum AppError {
+    DatabaseError(String),
+    ValidationError(String),
+}
+
+impl From<AppError> for Template {
+    fn from(error: AppError) -> Self {
+        let error_msg = match error {
+            AppError::DatabaseError(msg) => format!("Database error: {}", msg),
+            AppError::ValidationError(msg) => format!("Validation error: {}", msg),
+        };
+        Template::render("error", context! {
+            error: error_msg
+        })
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, FromForm)]
 struct SignupForm {
     username: String,
@@ -39,7 +57,20 @@ fn signup_page() -> Template {
 async fn signup_submit(
     form: Form<SignupForm>,
     db: &State<Surreal<Client>>,
-) -> Result<Redirect, String> {
+) -> Result<Redirect, Template> {
+    // Validate input
+    if form.username.is_empty() || form.email.is_empty() || form.password.is_empty() {
+        return Err(AppError::ValidationError("All fields are required".to_string()).into());
+    }
+    
+    if form.password.len() < 8 {
+        return Err(AppError::ValidationError("Password must be at least 8 characters".to_string()).into());
+    }
+    
+    if !form.email.contains('@') {
+        return Err(AppError::ValidationError("Invalid email address".to_string()).into());
+    }
+    
     // Simple password hashing (in production, use bcrypt or argon2)
     let password_hash = format!("hashed_{}", form.password);
     
@@ -64,10 +95,10 @@ async fn signup_submit(
                 // For simplicity, we'll redirect directly to passkey setup
                 Ok(Redirect::to(format!("/passkey-setup?username={}", form.username)))
             } else {
-                Err("Failed to create user".to_string())
+                Err(AppError::DatabaseError("Failed to create user".to_string()).into())
             }
         }
-        Err(e) => Err(format!("Database error: {}", e)),
+        Err(e) => Err(AppError::DatabaseError(format!("Error creating user: {}", e)).into()),
     }
 }
 
@@ -82,14 +113,17 @@ fn passkey_setup(username: String) -> Template {
 async fn passkey_complete(
     username: String,
     db: &State<Surreal<Client>>,
-) -> Result<Redirect, String> {
+) -> Result<Redirect, Template> {
     // Update user to mark passkey as registered
-    let _updated = db
+    let result = db
         .query("UPDATE user SET passkey_registered = true WHERE username = $username")
-        .bind(("username", username))
+        .bind(("username", &username))
         .await;
     
-    Ok(Redirect::to("/home"))
+    match result {
+        Ok(_) => Ok(Redirect::to("/home")),
+        Err(e) => Err(AppError::DatabaseError(format!("Error updating passkey status: {}", e)).into()),
+    }
 }
 
 #[get("/home")]

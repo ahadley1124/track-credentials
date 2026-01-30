@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Track Credentials</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Oops! Something went wrong</h1>
+            <p style="color: #d32f2f;">{{ error }}</p>
+            
+            <div style="margin-top: 30px;">
+                <a href="/signup" style="
+                    display: inline-block;
+                    padding: 12px 24px;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                ">Back to Signup</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
