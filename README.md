@@ -25,10 +25,12 @@ cd track-credentials
 2. Configure database credentials:
    - Copy `.env.example` to `.env`
    - Update the SurrealDB credentials in `.env`:
-     ```
+     ```env
+     SURREAL_URL=your-project.aws-use2.surreal.cloud
      SURREAL_USER=your_username
      SURREAL_PASS=your_password
      ```
+   - **Important**: All three environment variables are required for the application to run
 
 3. Build and run:
 ```bash
