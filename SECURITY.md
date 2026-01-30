@@ -1,5 +1,18 @@
 # Security Summary
 
+## Recent Security Fixes
+
+### SurrealDB Dependency Updated (CRITICAL)
+✅ **FIXED**: Updated SurrealDB from 1.5.6 to 2.5.0 to address multiple critical vulnerabilities:
+- **Confused Deputy Privilege Escalation** - Could allow unauthorized privilege escalation
+- **CPU exhaustion via custom functions** - DoS vulnerability
+- **Memory exhaustion via string::replace** - DoS vulnerability  
+- **Uncaught exception in Net module** - Database crash vulnerability
+- **Improper Authorization in Select Permissions** - Authorization bypass
+- **Server-takeover via SurrealQL injection** - Critical injection vulnerability
+
+All known vulnerabilities in SurrealDB 1.5.6 have been patched in version 2.5.0.
+
 ## Security Measures Implemented
 
 ### 1. Credential Management

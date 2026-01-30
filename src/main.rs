@@ -84,21 +84,20 @@ async fn signup_submit(
     };
     
     // Create user in database
-    let created: Result<Vec<User>, _> = db
+    let created: Result<Option<User>, _> = db
         .create("user")
         .content(user)
         .await;
     
     match created {
-        Ok(users) => {
-            if let Some(_user) = users.first() {
-                // Store user ID in session or pass as query parameter
-                // For simplicity, we'll redirect directly to passkey setup
-                // URL-encode the username to handle special characters
-                Ok(Redirect::to(format!("/passkey-setup?username={}", encode(&form.username))))
-            } else {
-                Err(AppError::DatabaseError("Failed to create user".to_string()).into())
-            }
+        Ok(Some(_user)) => {
+            // Store user ID in session or pass as query parameter
+            // For simplicity, we'll redirect directly to passkey setup
+            // URL-encode the username to handle special characters
+            Ok(Redirect::to(format!("/passkey-setup?username={}", encode(&form.username))))
+        }
+        Ok(None) => {
+            Err(AppError::DatabaseError("Failed to create user".to_string()).into())
         }
         Err(e) => Err(AppError::DatabaseError(format!("Error creating user: {}", e)).into()),
     }
@@ -121,10 +120,13 @@ async fn passkey_complete(
     form: Form<PasskeyForm>,
     db: &State<Surreal<Client>>,
 ) -> Result<Redirect, Template> {
+    // Clone the username to avoid lifetime issues
+    let username = form.username.clone();
+    
     // Update user to mark passkey as registered
     let result = db
         .query("UPDATE user SET passkey_registered = true WHERE username = $username")
-        .bind(("username", &form.username))
+        .bind(("username", username))
         .await;
     
     match result {

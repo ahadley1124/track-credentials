@@ -117,11 +117,12 @@ track-credentials/
 
 ### Main Dependencies
 - **rocket** (0.5.0): Web framework
-- **surrealdb** (1.1.1): Database client
+- **surrealdb** (2.5.0): Database client (updated from 1.5.6 to address security vulnerabilities)
 - **tokio** (1.35): Async runtime
 - **serde** (1.0): Serialization
 - **rocket_dyn_templates** (0.1.0): Template rendering with Tera
 - **webauthn-rs** (0.4): WebAuthn support (for future passkey implementation)
+- **urlencoding** (2.1): URL encoding for query parameters
 
 ## Configuration
 
